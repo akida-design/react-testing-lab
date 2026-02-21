@@ -3,14 +3,23 @@ import React from "react";
 function AddTransactionForm({postTransaction}) {
   function submitForm(e){
     e.preventDefault()
+    
+    // Get all form inputs safely
+    const formElements = e.target.elements;
+    const dateInput = formElements.namedItem('date');
+    const descriptionInput = formElements.namedItem('description');
+    const categoryInput = formElements.namedItem('category');
+    const amountInput = formElements.namedItem('amount');
+    
     const newTransaction = {
-      date: e.target.date.value,
-      description: e.target.description.value,
-      category: e.target.category.value,
-      amount: e.target.amount.value
+      date: (dateInput && dateInput.value) || new Date().toISOString().split('T')[0],
+      description: (descriptionInput && descriptionInput.value) || "",
+      category: (categoryInput && categoryInput.value) || "",
+      amount: (amountInput && amountInput.value) || ""
     }
     postTransaction(newTransaction)
-
+    // Reset form
+    e.target.reset()
   }
 
   return (
